@@ -421,28 +421,37 @@ void BoxApp::BuildBoxGeometry()
 		4, 3, 7
 	};
 
-    const UINT vbByteSize = (UINT)vertices.size() * sizeof(VPosData);
-	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
+  const UINT vbByteSizePos = (UINT)vertices.size() * sizeof(VPosData);
+  const UINT vbByteSizeColor = (UINT)colors.size() * sizeof(VColorData);
+  const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
 
-	mBoxGeo = std::make_unique<MeshGeometry>(); //He does an abstraction of the index data passed to the code, unlike in the book example where the implementation is done in raw d3d code, this handicaps my posibility to pass the color data this way. TODO: Ask profesor if implementation is posible.
-	mBoxGeo->Name = "boxGeo";
+  mBoxGeo = std::make_unique<MeshGeometry>();
+  mBoxGeo->Name = "boxGeo";
 
-	ThrowIfFailed(D3DCreateBlob(vbByteSize, &mBoxGeo->VertexBufferCPU));
-	CopyMemory(mBoxGeo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize);
+  ThrowIfFailed(D3DCreateBlob(vbByteSizePos, &mBoxGeo->VertexBufferCPU));
+  CopyMemory(mBoxGeo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSizePos);
 
-	ThrowIfFailed(D3DCreateBlob(ibByteSize, &mBoxGeo->IndexBufferCPU));
-	CopyMemory(mBoxGeo->IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
+  ThrowIfFailed(D3DCreateBlob(vbByteSizeColor, &mBoxGeo->VertexBufferCPU));
+  CopyMemory(mBoxGeo->VertexBufferCPU->GetBufferPointer(), colors.data(), vbByteSizeColor);
 
-	mBoxGeo->VertexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
-		mCommandList.Get(), vertices.data(), vbByteSize, mBoxGeo->VertexBufferUploader);
+  ThrowIfFailed(D3DCreateBlob(ibByteSize, &mBoxGeo->IndexBufferCPU));
+  CopyMemory(mBoxGeo->IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
 
-	mBoxGeo->IndexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
-		mCommandList.Get(), indices.data(), ibByteSize, mBoxGeo->IndexBufferUploader);
+  mBoxGeo->VertexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
+    mCommandList.Get(), vertices.data(), vbByteSizePos, mBoxGeo->VertexBufferUploader);
 
-	mBoxGeo->VertexByteStride = sizeof(VPosData);
-	mBoxGeo->VertexBufferByteSize = vbByteSize;
-	mBoxGeo->IndexFormat = DXGI_FORMAT_R16_UINT;
-	mBoxGeo->IndexBufferByteSize = ibByteSize;
+  mBoxGeo->VertexColorBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
+    mCommandList.Get(), colors.data(), vbByteSizeColor, mBoxGeo->VertexBufferUploader);
+
+  mBoxGeo->IndexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
+    mCommandList.Get(), indices.data(), ibByteSize, mBoxGeo->IndexBufferUploader);
+
+  mBoxGeo->VertexByteStride = sizeof(VertexPos);
+  mBoxGeo->VertexBufferByteSize = vbByteSizePos;
+  mBoxGeo->VertexColorByteStride = sizeof(VertexColor);
+  mBoxGeo->VertexColorBufferByteSize = vbByteSizeColor;
+  mBoxGeo->IndexFormat = DXGI_FORMAT_R16_UINT;
+  mBoxGeo->IndexBufferByteSize = ibByteSize;
 
 	SubmeshGeometry submesh;
 	submesh.IndexCount = (UINT)indices.size();
