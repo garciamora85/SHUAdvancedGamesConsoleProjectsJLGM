@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#Databases
+*.ipch
+*.db
