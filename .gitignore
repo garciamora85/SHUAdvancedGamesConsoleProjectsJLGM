@@ -34,3 +34,4 @@
 #Databases
 *.ipch
 *.db
+*.opendb
