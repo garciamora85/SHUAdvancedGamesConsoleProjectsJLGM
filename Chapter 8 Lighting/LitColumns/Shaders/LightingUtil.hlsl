@@ -14,6 +14,9 @@ struct Light
     float FalloffEnd;   // point/spot light only
     float3 Position;    // point light only
     float SpotPower;    // spot light only
+    float AttenuationConstantValue;
+    float AttenuationLinearValue;
+    float AttenuationQuadraticValue;
 };
 
 struct Material
@@ -27,6 +30,14 @@ float CalcAttenuation(float d, float falloffStart, float falloffEnd)
 {
     // Linear falloff.
     return saturate((falloffEnd-d) / (falloffEnd - falloffStart));
+}
+
+float CalcAttenuation2(float d, float falloffStart, float falloffEnd, float AttenuationConstantValue, float AttenuationLinearValue, float AttenuationQuadraticValue);
+{
+  
+  float att = 1 / (AttenuationConstantValue + AttenuationLinearValue * d + AttenuationQuadraticValue * pow(d, 2));
+
+  return att;//saturate((falloffEnd - d) / (falloffEnd - falloffStart));
 }
 
 // Schlick gives an approximation to Fresnel reflectance (see pg. 233 "Real-Time Rendering 3rd Ed.").
@@ -96,7 +107,7 @@ float3 ComputePointLight(Light L, Material mat, float3 pos, float3 normal, float
     float3 lightStrength = L.Strength * ndotl;
 
     // Attenuate light by distance.
-    float att = CalcAttenuation(d, L.FalloffStart, L.FalloffEnd);
+    float att = CalcAttenuation(d, L.FalloffStart, L.FalloffEnd);//CalcAttenuation2(d, L.FalloffStart, L.FalloffEnd, L.AttenuationConstantValue, L.AttenuationLinearValue, L.AttenuationQuadraticValue);
     lightStrength *= att;
 
     return BlinnPhong(lightStrength, lightVec, normal, toEye, mat);
@@ -125,7 +136,7 @@ float3 ComputeSpotLight(Light L, Material mat, float3 pos, float3 normal, float3
     float3 lightStrength = L.Strength * ndotl;
 
     // Attenuate light by distance.
-    float att = CalcAttenuation(d, L.FalloffStart, L.FalloffEnd);
+    float att = CalcAttenuation2(d, L.FalloffStart, L.FalloffEnd, L.AttenuationConstantValue, L.AttenuationLinearValue, L.AttenuationQuadraticValue);
     lightStrength *= att;
 
     // Scale by spotlight

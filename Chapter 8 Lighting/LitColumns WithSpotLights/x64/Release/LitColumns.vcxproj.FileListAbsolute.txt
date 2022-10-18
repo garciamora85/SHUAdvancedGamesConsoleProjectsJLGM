@@ -1,0 +1,4 @@
+C:\Desarrollo\a\d3d12book-master\d3d12book-master\Chapter 8 Lighting\LitColumns\x64\Release\LitColumns.exe
+C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 8 Lighting\LitColumns\x64\Release\LitColumns.exe
+C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 8 Lighting\LitColumns WithSpotLights\x64\Release\LitColumns.exe
+C:\Desarrollo\a\Chapter 8 Lighting\LitColumns WithSpotLights\x64\Release\LitColumns.exe
