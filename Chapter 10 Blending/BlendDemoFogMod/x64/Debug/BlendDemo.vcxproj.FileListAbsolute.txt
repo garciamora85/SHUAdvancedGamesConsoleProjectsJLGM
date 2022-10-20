@@ -1,0 +1,2 @@
+C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 10 Blending\BlendDemo\x64\Debug\BlendDemo.exe
+C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 10 Blending\BlendDemoFogMod\x64\Debug\BlendDemo.exe
