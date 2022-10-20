@@ -1,0 +1,14 @@
+﻿  d3dApp.cpp
+  d3dUtil.cpp
+  DDSTextureLoader.cpp
+  GameTimer.cpp
+  GeometryGenerator.cpp
+  MathHelper.cpp
+  FrameResource.cpp
+  TexWavesApp.cpp
+  Waves.cpp
+  Generando código
+  Previous IPDB not found, fall back to full compilation.
+  All 2239 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+  TexWaves.vcxproj -> C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 9 Texturing\TexWaves\x64\Release\TexWaves.exe

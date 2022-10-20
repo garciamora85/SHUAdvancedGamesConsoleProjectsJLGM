@@ -17,6 +17,8 @@
     #define NUM_SPOT_LIGHTS 0
 #endif
 
+#define TOONSHADER
+
 // Include structures and functions for lighting.
 #include "LightingUtil.hlsl"
 
@@ -155,13 +157,15 @@ float4 PS(VertexOut pin) : SV_Target
 
     float4 litColor = ambient + directLight;
 
+#ifdef TOONSHADER
+
+#endif
+
 #ifdef FOG
-    //float fogAmmount = saturate((distToEye - gFogStart) / gFogRange);
-    float linearFog = saturate(( distToEye - gFogLinearColor) / gFogRange * gFogDensity1);
-    //float linearFog = saturate(( distToEye - gFogRange) / (gFogRange - FogStart));//saturate((distToEye - gFogStart) / gFogRange);
-    float powerFog1 = saturate((pow(distToEye - gFogPow1Start, gFogExponential1) ) / gFogRange * gFogDensity2);
     
-    float powerFog2 = saturate((pow(distToEye - gFogPow2Start, gFogExponential2)) / gFogRange * gFogDensity3);//saturate((distToEye - gFogStart) / gFogRange);
+    float linearFog = saturate(( distToEye - gFogLinearColor) / gFogRange * gFogDensity1);
+    float powerFog1 = saturate((pow(distToEye - gFogPow1Start, gFogExponential1) ) / gFogRange * gFogDensity2);
+    float powerFog2 = saturate((pow(distToEye - gFogPow2Start, gFogExponential2)) / gFogRange * gFogDensity3);
    
     litColor = lerp(litColor, gFogLinearColor, linearFog);
     litColor = lerp(litColor, gFogPow1Color, powerFog1);

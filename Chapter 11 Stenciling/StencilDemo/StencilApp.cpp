@@ -720,7 +720,7 @@ void StencilApp::BuildRoomGeometry()
     //  /   Floor      /
 	// /--------------/
 
-	std::array<Vertex, 20> vertices = 
+	std::array<Vertex, 24> vertices = 
 	{
 		// Floor: Observe we tile texture coordinates.
 		Vertex(-3.5f, 0.0f, -10.0f, 0.0f, 1.0f, 0.0f, 0.0f, 4.0f), // 0 
@@ -749,10 +749,16 @@ void StencilApp::BuildRoomGeometry()
 		Vertex(-2.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f), // 16
 		Vertex(-2.5f, 4.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f),
 		Vertex(2.5f, 4.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f),
-		Vertex(2.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f)
+		Vertex(2.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f),
+
+		// OtherMirror
+		Vertex(-2.5f, 0.0f, 2.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f), // 20
+		Vertex(-2.5f, 4.0f, 2.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f),
+		Vertex(2.5f, 4.0f, 2.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f),
+		Vertex(2.5f, 0.0f, 2.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f),
 	};
 
-	std::array<std::int16_t, 30> indices = 
+	std::array<std::int16_t, 36> indices = 
 	{
 		// Floor
 		0, 1, 2,	
@@ -770,7 +776,11 @@ void StencilApp::BuildRoomGeometry()
 
 		// Mirror
 		16, 17, 18,
-		16, 18, 19
+		16, 18, 19,
+
+		// OtherMirror
+		20, 21, 22,
+		20, 22, 23
 	};
 
 	SubmeshGeometry floorSubmesh;
@@ -787,6 +797,11 @@ void StencilApp::BuildRoomGeometry()
 	mirrorSubmesh.IndexCount = 6;
 	mirrorSubmesh.StartIndexLocation = 24;
 	mirrorSubmesh.BaseVertexLocation = 0;
+
+	SubmeshGeometry otherMirrorSubmesh;
+	otherMirrorSubmesh.IndexCount = 6;
+	otherMirrorSubmesh.StartIndexLocation = 30;
+	otherMirrorSubmesh.BaseVertexLocation = 0;
 
     const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
     const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
@@ -814,6 +829,7 @@ void StencilApp::BuildRoomGeometry()
 	geo->DrawArgs["floor"] = floorSubmesh;
 	geo->DrawArgs["wall"] = wallSubmesh;
 	geo->DrawArgs["mirror"] = mirrorSubmesh;
+	geo->DrawArgs["othermirror"] = otherMirrorSubmesh;
 
 	mGeometries[geo->Name] = std::move(geo);
 }
@@ -1163,12 +1179,26 @@ void StencilApp::BuildRenderItems()
 	mRitemLayer[(int)RenderLayer::Mirrors].push_back(mirrorRitem.get());
 	mRitemLayer[(int)RenderLayer::Transparent].push_back(mirrorRitem.get());
 
+	auto othermirroRitem = std::make_unique<RenderItem>();
+	othermirroRitem->World = MathHelper::Identity4x4();
+	othermirroRitem->TexTransform = MathHelper::Identity4x4();
+	othermirroRitem->ObjCBIndex = 6;
+	othermirroRitem->Mat = mMaterials["icemirror"].get();
+	othermirroRitem->Geo = mGeometries["roomGeo"].get();
+	othermirroRitem->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	othermirroRitem->IndexCount = mirrorRitem->Geo->DrawArgs["othermirror"].IndexCount;
+	othermirroRitem->StartIndexLocation = mirrorRitem->Geo->DrawArgs["othermirror"].StartIndexLocation;
+	othermirroRitem->BaseVertexLocation = mirrorRitem->Geo->DrawArgs["othermirror"].BaseVertexLocation;
+	mRitemLayer[(int)RenderLayer::Mirrors].push_back(mirrorRitem.get());
+	mRitemLayer[(int)RenderLayer::Transparent].push_back(mirrorRitem.get());
+
 	mAllRitems.push_back(std::move(floorRitem));
 	mAllRitems.push_back(std::move(wallsRitem));
 	mAllRitems.push_back(std::move(skullRitem));
 	mAllRitems.push_back(std::move(reflectedSkullRitem));
 	mAllRitems.push_back(std::move(shadowedSkullRitem));
 	mAllRitems.push_back(std::move(mirrorRitem));
+	mAllRitems.push_back(std::move(othermirroRitem));
 }
 
 void StencilApp::DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems)

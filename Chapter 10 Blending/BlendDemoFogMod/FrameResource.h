@@ -39,7 +39,7 @@ struct PassConstants
   DirectX::XMFLOAT4 gFogPow1Color = { 0.7f, 0.7f, 0.7f, 1.0f };
   DirectX::XMFLOAT4 gFogPow2Color = { 0.7f, 0.7f, 0.7f, 1.0f };
 #endif
-  float gFogLinearStart = 75.0f;
+  float gFogLinearStart = 100.0f;
   float gFogPow1Start = 100.0f;
   float gFogPow2Start = 130.0f;
 	float gFogRange = 150.0f;
