@@ -1,0 +1,13 @@
+﻿  d3dApp.cpp
+  d3dUtil.cpp
+  GameTimer.cpp
+  GeometryGenerator.cpp
+  MathHelper.cpp
+  FrameResource.cpp
+  LitWavesApp.cpp
+  Waves.cpp
+  Generando código
+  Previous IPDB was built with incompatible compiler, fall back to full compilation.
+  All 1996 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+  LitWaves.vcxproj -> C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 8 Lighting\LitWaves WithToonShader\x64\Release\LitWaves.exe
