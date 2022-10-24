@@ -1,0 +1,2 @@
+C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 9 Texturing\Crate\x64\Debug\Crate.exe
+C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 9 Texturing\Crate multitexturingtest\x64\Debug\Crate.exe
