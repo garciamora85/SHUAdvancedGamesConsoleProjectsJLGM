@@ -1,2 +1,6 @@
-﻿  CrateApp.cpp
+﻿  d3dApp.cpp
+  d3dUtil.cpp
+  CrateApp.cpp
+  FrameResource.cpp
+  Generando código...
   Crate.vcxproj -> C:\Desarrollo\SHUAdvancedGamesConsoleProjectsJLGM0\SHUAdvancedGamesConsoleProjectsJLGM\Chapter 9 Texturing\Crate multitexturingArrayAnimation\x64\Debug\Crate.exe
